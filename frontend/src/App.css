@@ -276,6 +276,54 @@ body {
   display: inline-block;
 }
 
+.spot-detail {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.no-desc {
+  color: #999;
+  font-style: italic;
+}
+
+.spot-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.nav-btn, .map-btn {
+  flex: 1;
+  text-align: center;
+  padding: 7px 0;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.nav-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+}
+
+.map-btn {
+  background: #f0f0f0;
+  color: #444;
+}
+
+.nav-btn:hover, .map-btn:hover {
+  opacity: 0.85;
+}
+
 .ai-suggest {
   display: flex;
   flex-direction: column;
