@@ -1,4 +1,4 @@
-const OVERPASS_URL = 'https://overpass-api.de/api/interpreter'
+const OVERPASS_URL = 'https://overpass.kumi.systems/api/interpreter'
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search'
 
 // カテゴリごとに個別のクエリに分けてシンプルに保つ
@@ -66,11 +66,8 @@ async function fetchJSON(url, options) {
 
 export async function searchSpots({ lat, lon, radius, categories }) {
   const query = buildOverpassQuery(lat, lon, radius, categories)
-  const data = await fetchJSON(OVERPASS_URL, {
-    method: 'POST',
-    body: `data=${encodeURIComponent(query)}`,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-  })
+  // GETリクエストはCORSプリフライト不要で安定
+  const data = await fetchJSON(`${OVERPASS_URL}?data=${encodeURIComponent(query)}`)
 
   if (!data.elements) throw new Error('検索結果を取得できませんでした')
 
