@@ -1,0 +1,25 @@
+[build]
+  base    = "frontend"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory         = "netlify/functions"
+  node_bundler      = "esbuild"
+  included_files    = ["backend/**"]
+  external_node_modules = ["*"]
+
+# /api/* → Netlify Function にリダイレクト
+[[redirects]]
+  from   = "/api/*"
+  to     = "/.netlify/functions/api/api/:splat"
+  status = 200
+
+# SPA フォールバック
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
