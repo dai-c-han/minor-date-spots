@@ -5,18 +5,17 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  PYTHON_VERSION = "3.11"
 
 [functions]
-  directory         = "netlify/functions"
-  node_bundler      = "esbuild"
-  included_files    = ["backend/**"]
-  external_node_modules = ["*"]
+  directory = "netlify/functions"
 
 # /api/* → Netlify Function にリダイレクト
 [[redirects]]
   from   = "/api/*"
-  to     = "/.netlify/functions/api/api/:splat"
+  to     = "/.netlify/functions/api"
   status = 200
+  force  = true
 
 # SPA フォールバック
 [[redirects]]
