@@ -29,15 +29,11 @@ export async function geocode(query) {
 
 function buildOverpassQuery(lat, lon, radius, categories) {
   const cats = categories.length ? categories : DEFAULT_CATS
-  const parts = cats.flatMap(cat => {
-    const tag = CATEGORY_TAGS[cat]
-    if (!tag) return []
-    return [
-      `node[${tag}](around:${radius},${lat},${lon});`,
-      `way[${tag}](around:${radius},${lat},${lon});`,
-    ]
-  })
-  return `[out:json][timeout:25];\n(\n${parts.join('\n')}\n);\nout center 40;`
+  // nwr = node/way/relation を一行で指定（クエリ行数を半減）
+  const parts = cats
+    .filter(cat => CATEGORY_TAGS[cat])
+    .map(cat => `nwr[${CATEGORY_TAGS[cat]}](around:${radius},${lat},${lon});`)
+  return `[out:json][timeout:15];\n(\n${parts.join('\n')}\n);\nout center 20;`
 }
 
 function detectCategory(tags) {
