@@ -93,7 +93,7 @@ export async function searchSpots({ lat, lon, radius, categories }) {
 }
 
 export async function aiSuggest({ area, categories }) {
-  const res = await fetch('/.netlify/functions/ai-suggest', {
+  const res = await fetch('/api/ai-suggest', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ area, categories }),
