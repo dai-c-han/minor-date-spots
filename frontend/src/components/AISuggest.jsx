@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { api } from '../api'
+import { aiSuggest } from '../api'
 
 const CATEGORIES = [
-  { id: 'cafe', label: '☕ カフェ' },
-  { id: 'park', label: '🌳 公園' },
-  { id: 'art', label: '🎨 美術館・ギャラリー' },
-  { id: 'shrine', label: '⛩️ 神社・寺' },
+  { id: 'cafe',      label: '☕ カフェ' },
+  { id: 'park',      label: '🌳 公園' },
+  { id: 'art',       label: '🎨 美術館・ギャラリー' },
+  { id: 'shrine',    label: '⛩️ 神社・寺' },
   { id: 'viewpoint', label: '🔭 展望台' },
-  { id: 'garden', label: '🌸 庭園' },
+  { id: 'garden',    label: '🌸 庭園' },
 ]
 
 const CATEGORY_EMOJI = {
@@ -16,10 +16,10 @@ const CATEGORY_EMOJI = {
 }
 
 export default function AISuggest() {
-  const [area, setArea] = useState('')
+  const [area, setArea]             = useState('')
   const [selectedCats, setSelectedCats] = useState([])
-  const [suggestions, setSuggestions] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [suggestions, setSuggestions]   = useState([])
+  const [loading, setLoading]       = useState(false)
 
   const toggleCat = (id) =>
     setSelectedCats(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id])
@@ -28,13 +28,10 @@ export default function AISuggest() {
     if (!area.trim()) return
     setLoading(true)
     try {
-      const res = await api.post('/api/ai-suggest', {
-        area,
-        categories: selectedCats,
-      })
-      setSuggestions(res.data.suggestions)
+      const data = await aiSuggest({ area, categories: selectedCats })
+      setSuggestions(data.suggestions)
     } catch (e) {
-      alert('エラー: ' + (e.response?.data?.detail || e.message))
+      alert('エラー: ' + e.message)
     } finally {
       setLoading(false)
     }
@@ -44,7 +41,7 @@ export default function AISuggest() {
     <div className="ai-suggest">
       <div className="ai-desc">
         <p>AIがあなたの知らない穴場スポットを提案します。<br />
-        ※ ANTHROPIC_API_KEY の設定が必要です。</p>
+        ※ Netlify環境変数に <code>ANTHROPIC_API_KEY</code> の設定が必要です。</p>
       </div>
       <div className="search-row">
         <input
